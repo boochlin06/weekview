@@ -1,0 +1,2 @@
+rootProject.name='weekview'
+include ':app'
