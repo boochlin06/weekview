@@ -1,10 +1,12 @@
-package com.heaton.weekview;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.heaton.weekview.view;
 
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.heaton.weekview.R;
+
+public class WeekActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
