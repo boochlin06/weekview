@@ -3,28 +3,33 @@ package com.heaton.weekview.model;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 @Entity(tableName = "classInterval")
 public class ClassInterval {
-    private String start;
-    private String end;
+    private transient String teacherName;
+    @SerializedName("start")
+    private String startAt;
+    @SerializedName("end")
+    private String endAt;
 
     @PrimaryKey(autoGenerate = true)
     private long id;
 
-    public String getStart() {
-        return start;
+    public String getStartAt() {
+        return startAt;
     }
 
-    public void setStart(String start) {
-        this.start = start;
+    public void setStartAt(String startAt) {
+        this.startAt = startAt;
     }
 
-    public String getEnd() {
-        return end;
+    public String getEndAt() {
+        return endAt;
     }
 
-    public void setEnd(String end) {
-        this.end = end;
+    public void setEndAt(String endAt) {
+        this.endAt = endAt;
     }
 
     public long getId() {
@@ -33,5 +38,13 @@ public class ClassInterval {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
     }
 }

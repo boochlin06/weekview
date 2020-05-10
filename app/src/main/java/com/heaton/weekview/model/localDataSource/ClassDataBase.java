@@ -31,12 +31,12 @@ public abstract class ClassDataBase extends RoomDatabase {
         ClassDataBase dataBase = Room.databaseBuilder(
                 context,
                 ClassDataBase.class,
-                DB_NAME).allowMainThreadQueries()
+                DB_NAME)
                 .fallbackToDestructiveMigration()
                 .build();
         return dataBase;
     }
 
-    public abstract ClassIntervalDao getClassDao();
+    public abstract ClassIntervalDao getClassIntervalDao();
 
 }
