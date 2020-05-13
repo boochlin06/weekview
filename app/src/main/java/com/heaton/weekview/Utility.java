@@ -1,46 +1,55 @@
 package com.heaton.weekview;
 
-import androidx.annotation.NonNull;
-
-import com.heaton.weekview.model.ClassData;
+import com.heaton.weekview.schedule.ClassData;
 import com.heaton.weekview.model.ClassInterval;
 import com.heaton.weekview.model.remoteDataSource.ScheduleJsonObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Utility {
-    public static Date convertClassIntervalToDate(@NonNull String dateString) {
-        //"2020-05-10T17:00:00Z"
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-ddTHH:mm:ssZ");
-        try {
-            Date date = simpleDateFormat.parse(dateString);
-            return date;
-        } catch (ParseException e) {
-            e.printStackTrace();
+    public static Map<Integer, List<ClassData>> convertScheduleDataToDayList(String teacherName
+            , ScheduleJsonObject scheduleJsonObject) {
+        Map<Integer, List<ClassData>> scheduleMaps = new HashMap<>();
+        convertClassIntervalToClassDataList(teacherName, scheduleJsonObject.getAvailableList(), false, scheduleMaps);
+        convertClassIntervalToClassDataList(teacherName, scheduleJsonObject.getBookedList(), true, scheduleMaps);
+        for (int key : scheduleMaps.keySet()) {
+            Collections.sort(scheduleMaps.get(key), new ClassDataComparator());
+            scheduleMaps.put(key, scheduleMaps.get(key));
         }
-        return null;
+        return scheduleMaps;
     }
 
-    public static Map<Integer, List<ClassData>> convertScheduleDataToDayList(ScheduleJsonObject scheduleJsonObject) {
-        List<ClassInterval> available = scheduleJsonObject.getAvailableList();
-        List<ClassInterval> booked = scheduleJsonObject.getBookedList();
-        Map<Integer, List<ClassData>> week = new HashMap<>();
+    public static void convertClassIntervalToClassDataList(String teacherName
+            , List<ClassInterval> classDataList, boolean isBooked
+            , Map<Integer, List<ClassData>> scheduleMaps) {
         Calendar calendar = Calendar.getInstance();
+        for (int i = 0; i < classDataList.size(); i++) {
+            ClassInterval interval = classDataList.get(i);
+            for (long j = interval.getStartAt().getTime(); j < interval.getEndAt().getTime(); j += 30 * 60 * 1000) {
+                ClassData classData = new ClassData();
+                classData.setBooked(isBooked);
+                classData.setStartTime(new Date(j + calendar.getTimeZone().getRawOffset()));
+                classData.setTeacherName(teacherName);
+                calendar.setTime(classData.getStartTime());
+                int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+                List<ClassData> dayList = scheduleMaps.getOrDefault(dayOfMonth, new ArrayList<>());
+                dayList.add(classData);
+                scheduleMaps.put(dayOfMonth, dayList);
+            }
+        }
+    }
 
-        for (int i = 0; i < available.size(); i++) {
-            Date date = convertClassIntervalToDate(available.get(i).getStartAt());
-            ClassData classData = new ClassData();
-            classData.setBooked(false);
-            classData.setDate(date);
-            calendar.setTime(date);
-            calendar.get(Calendar.DAY_OF_WEEK);
-
+    public static class ClassDataComparator implements Comparator<ClassData> {
+        @Override
+        public int compare(ClassData c1, ClassData c2) {
+            return c1.getStartTime().compareTo(c2.getStartTime());
         }
     }
 }

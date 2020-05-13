@@ -1,34 +1,42 @@
 package com.heaton.weekview.model;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 @Entity(tableName = "classInterval")
 public class ClassInterval {
-    private transient String teacherName;
     @SerializedName("start")
-    private String startAt;
+    @Ignore
+//    @TypeConverters({Converters.class})
+    private Date startAt;
     @SerializedName("end")
-    private String endAt;
+//    @TypeConverters({Converters.class})
+    @Ignore
+    private Date endAt;
+    private boolean isBooked;
+    private String teacherName;
 
     @PrimaryKey(autoGenerate = true)
     private long id;
 
-    public String getStartAt() {
+    public Date getStartAt() {
         return startAt;
     }
 
-    public void setStartAt(String startAt) {
+    public void setStartAt(Date startAt) {
         this.startAt = startAt;
     }
 
-    public String getEndAt() {
+    public Date getEndAt() {
         return endAt;
     }
 
-    public void setEndAt(String endAt) {
+    public void setEndAt(Date endAt) {
         this.endAt = endAt;
     }
 
@@ -38,6 +46,14 @@ public class ClassInterval {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public boolean isBooked() {
+        return isBooked;
+    }
+
+    public void setBooked(boolean booked) {
+        isBooked = booked;
     }
 
     public String getTeacherName() {

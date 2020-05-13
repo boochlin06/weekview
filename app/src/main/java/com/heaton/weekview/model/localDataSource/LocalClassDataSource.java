@@ -5,6 +5,7 @@ import android.content.Context;
 import com.heaton.weekview.model.ClassDataSource;
 import com.heaton.weekview.model.ClassInterval;
 import com.heaton.weekview.model.remoteDataSource.RemoteClassDataSource;
+import com.heaton.weekview.model.remoteDataSource.ScheduleJsonObject;
 
 import java.util.List;
 
@@ -30,15 +31,20 @@ public class LocalClassDataSource implements ClassDataSource {
     }
 
     @Override
-    public void getScheduleList(String teacherName, String startedAt, RemoteClassDataSource.GetListCallback callback) {
-        try {
-            String endAt = String.valueOf(Long.parseLong(startedAt) + 7 * 24 * 3600 * 1000);
-            List<ClassInterval> classIntervalList = classIntervalDao.getClassIntervals(teacherName, startedAt, endAt);
-            callback.onSuccess(classIntervalList);
-        } catch (Exception e) {
-            e.printStackTrace();
-            callback.onFailure(e.getMessage());
-        }
+    public void getScheduleList(String teacherName, String startedAt
+            , RemoteClassDataSource.GetScheduleCallback callback) {
+//        try {
+//            String endAt = String.valueOf(Long.parseLong(startedAt) + 7 * 24 * 3600 * 1000);
+//            List<ClassInterval> bookedList = classIntervalDao.getClassIntervals(teacherName, startedAt, endAt, true);
+//            List<ClassInterval> availableList = classIntervalDao.getClassIntervals(teacherName, startedAt, endAt, false);
+//            ScheduleJsonObject scheduleJsonObject = new ScheduleJsonObject();
+//            scheduleJsonObject.setAvailableList(availableList);
+//            scheduleJsonObject.setBookedList(bookedList);
+//            callback.onSuccess(scheduleJsonObject);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            callback.onFailure(e.getMessage());
+//        }
     }
 
     @Override

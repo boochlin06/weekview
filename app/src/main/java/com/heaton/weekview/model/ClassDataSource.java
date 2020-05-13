@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ClassDataSource {
     void getScheduleList(String teacherName, String startedAt
-            , RemoteClassDataSource.GetListCallback callback);
+            , RemoteClassDataSource.GetScheduleCallback callback);
 
     void updateScheduleList(String teacherName, List<ClassInterval> intervalList);
 }

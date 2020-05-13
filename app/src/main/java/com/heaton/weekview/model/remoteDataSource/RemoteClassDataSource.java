@@ -5,21 +5,20 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.heaton.weekview.Utility;
-import com.heaton.weekview.model.ClassData;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.heaton.weekview.Constants;
 import com.heaton.weekview.model.ClassDataSource;
 import com.heaton.weekview.model.ClassInterval;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class RemoteClassDataSource implements ClassDataSource {
 
@@ -28,9 +27,11 @@ public class RemoteClassDataSource implements ClassDataSource {
     private RemoteClassDataService.TeacherService remotePlayerDataService;
 
     private RemoteClassDataSource() {
+        Gson gson = new GsonBuilder()
+                .setDateFormat(Constants.TIME_STAMP_RESPONSE_FORMAT)
+                .create();
         Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .baseUrl(RemoteClassDataService.BASE_URL)
                 .build();
         remotePlayerDataService = retrofit.create(RemoteClassDataService.TeacherService.class);
@@ -48,12 +49,12 @@ public class RemoteClassDataSource implements ClassDataSource {
     }
 
     public void getScheduleList(String teacherName, String startedAt
-            , GetListCallback callback) {
+            , GetScheduleCallback callback) {
         if (TextUtils.isEmpty(teacherName) || TextUtils.isEmpty(startedAt)) {
             Log.e(TAG, "getScheduleList onFailure: parameter is empty");
             callback.onFailure("Parameter is empty");
         } else {
-            Call<List<ClassInterval>> call = remotePlayerDataService.getScheduleList(teacherName, startedAt);
+            Call<ScheduleJsonObject> call = remotePlayerDataService.getScheduleList(teacherName, startedAt);
             call.enqueue(new GetScheduleListResponseCallback(callback));
         }
     }
@@ -66,9 +67,9 @@ public class RemoteClassDataSource implements ClassDataSource {
 
     private class GetScheduleListResponseCallback implements Callback<ScheduleJsonObject> {
 
-        private GetListCallback callback;
+        private GetScheduleCallback callback;
 
-        public GetScheduleListResponseCallback(@NonNull GetListCallback callback) {
+        public GetScheduleListResponseCallback(@NonNull GetScheduleCallback callback) {
             this.callback = callback;
         }
 
@@ -76,9 +77,7 @@ public class RemoteClassDataSource implements ClassDataSource {
         public void onResponse(Call<ScheduleJsonObject> call, Response<ScheduleJsonObject> response) {
             if (response.isSuccessful()) {
                 ScheduleJsonObject result = response.body();
-                Map<Integer, List<ClassData>> map = Utility.convertScheduleDataToDayList(result);
-
-                callback.onSuccess(response.body());
+                callback.onSuccess(result);
             } else {
                 String errorMessage = "";
                 try {
@@ -98,8 +97,10 @@ public class RemoteClassDataSource implements ClassDataSource {
         }
     }
 
-    private interface GetScheduleCallback {
+    public interface GetScheduleCallback {
+        void onSuccess(ScheduleJsonObject scheduleJsonObject);
 
+        void onFailure(String errorMessage);
     }
 
     public interface GetListCallback {

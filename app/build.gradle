@@ -44,8 +44,11 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.14.7'
     implementation "com.squareup.retrofit2:converter-gson:$retrofit2_version"
     implementation "com.squareup.retrofit2:converter-scalars:$retrofit2_version"
-    def room_version = "2.2.5" // 2.1.0 for latest stable version
+    def room_version = "2.2.5"
 
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation "androidx.recyclerview:recyclerview-selection:1.1.0-rc01"
 }

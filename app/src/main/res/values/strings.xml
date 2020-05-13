@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">weekview</string>
+    <string name="available_times">Available times</string>
+    <string name="time_zone_hint">* All the timings listed are in your timezone:%s</string>
+    <string name="network_error">Network connect error</string>
 </resources>
