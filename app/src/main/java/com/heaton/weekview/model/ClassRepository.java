@@ -1,32 +1,36 @@
 package com.heaton.weekview.model;
 
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 
 import com.heaton.weekview.model.remoteDataSource.RemoteClassDataSource;
 import com.heaton.weekview.model.remoteDataSource.ScheduleJsonObject;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ClassRepository implements ClassDataSource {
     private static volatile ClassRepository mInstance;
 
     private ClassDataSource remote;
     private ClassDataSource local;
+    private ExecutorService executorService;
     private static final String TAG = ClassRepository.class.getSimpleName();
 
 
-    private ClassRepository(Context context) {
-        remote = RemoteClassDataSource.getInstance();
-//        local = LocalClassDataSource.getInstance(context);
+    private ClassRepository(@NonNull ClassDataSource local
+            , @NonNull ClassDataSource remote) {
+        this.remote = remote;
+        this.local = local;
+        executorService = Executors.newSingleThreadExecutor();
     }
 
-    public static ClassDataSource getInstance(Context context) {
+    public static ClassDataSource getInstance(@NonNull ClassDataSource local
+            , @NonNull ClassDataSource remote) {
         if (mInstance == null) {
             synchronized (ClassRepository.class) {
                 if (mInstance == null) {
-                    mInstance = new ClassRepository(context);
+                    mInstance = new ClassRepository(local, remote);
                 }
             }
         }
@@ -40,21 +44,32 @@ public class ClassRepository implements ClassDataSource {
             @Override
             public void onSuccess(ScheduleJsonObject scheduleJsonObject) {
                 callback.onSuccess(scheduleJsonObject);
-//                local.updateScheduleList(teacherName, scheduleJsonObject.getAvailableList());
-//                local.updateScheduleList(teacherName, scheduleJsonObject.getBookedList());
+                executorService.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        local.updateScheduleList(teacherName, scheduleJsonObject.getAvailableList(), false);
+                        local.updateScheduleList(teacherName, scheduleJsonObject.getBookedList(), true);
+                    }
+                });
             }
 
             @Override
             public void onFailure(String errorMessage) {
                 callback.onFailure(errorMessage);
-                //local.getScheduleList(teacherName, startedAt, callback);
+                local.getScheduleList(teacherName, startedAt, callback);
             }
         });
     }
 
     @Override
-    public void updateScheduleList(@NonNull String teacherName, @NonNull List<ClassInterval> intervalList) {
-        //remote.updateScheduleList(teacherName, intervalList);
-        //local.updateScheduleList(teacherName, intervalList);
+    public void updateScheduleList(@NonNull String teacherName, @NonNull List<ClassInterval> intervalList
+            , boolean isBooked) {
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                remote.updateScheduleList(teacherName, intervalList, isBooked);
+                local.updateScheduleList(teacherName, intervalList, isBooked);
+            }
+        });
     }
 }

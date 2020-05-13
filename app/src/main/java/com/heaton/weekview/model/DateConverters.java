@@ -2,18 +2,18 @@ package com.heaton.weekview.model;
 
 import androidx.room.TypeConverter;
 
-import com.heaton.weekview.Constants;
+import com.heaton.weekview.constants.FormatConstants;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Converters {
-    static DateFormat df = new SimpleDateFormat(Constants.TIME_STAMP_RESPONSE_FORMAT);
+public class DateConverters {
+    static DateFormat df = new SimpleDateFormat(FormatConstants.TIME_STAMP_RESPONSE_FORMAT);
 
     @TypeConverter
-    public static Date fromTimestamp(String value) {
+    public static Date fromStringToDate(String value) {
         if (value != null) {
             try {
                 return df.parse(value);
@@ -24,6 +24,11 @@ public class Converters {
         } else {
             return null;
         }
+    }
+
+    @TypeConverter
+    public static String fromDateToString(Date value) {
+        return df.format(value);
     }
 //
 //    @TypeConverter

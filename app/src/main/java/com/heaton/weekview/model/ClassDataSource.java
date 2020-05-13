@@ -8,5 +8,5 @@ public interface ClassDataSource {
     void getScheduleList(String teacherName, String startedAt
             , RemoteClassDataSource.GetScheduleCallback callback);
 
-    void updateScheduleList(String teacherName, List<ClassInterval> intervalList);
+    void updateScheduleList(String teacherName, List<ClassInterval> intervalList, boolean isBooked);
 }

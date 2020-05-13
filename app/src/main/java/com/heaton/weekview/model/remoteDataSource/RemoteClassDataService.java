@@ -6,8 +6,6 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public class RemoteClassDataService {
-    public static final String BASE_URL = "https://api.amazingtalker.com";
-    //?started_at=2020-05-09T16
 
     public interface TeacherService {
         @GET("v1/guest/teachers/{teacherName}/schedule")

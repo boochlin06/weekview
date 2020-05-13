@@ -13,8 +13,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.heaton.weekview.Constants;
-import com.heaton.weekview.Injection;
+import com.heaton.weekview.constants.FormatConstants;
+import com.heaton.weekview.injecter.Injection;
 import com.heaton.weekview.R;
 
 import java.text.SimpleDateFormat;
@@ -29,7 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.heaton.weekview.Constants.MOCK_TEACHER_NAME;
+import static com.heaton.weekview.constants.NetworkConstants.MOCK_TEACHER_NAME;
 
 public class ScheduleActivity extends AppCompatActivity implements ScheduleContract.View {
 
@@ -90,7 +90,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         SimpleDateFormat formatDayOfWeek = new SimpleDateFormat("EEE");
         linearSchedule.removeAllViews();
         int startDayOfMonth = scheduleStartDate.get(Calendar.DAY_OF_MONTH);
-        for (int i = startDayOfMonth; i < startDayOfMonth + Constants.SCHEDULE_INTERVAL_DAYS; i++) {
+        for (int i = startDayOfMonth; i < startDayOfMonth + FormatConstants.SCHEDULE_INTERVAL_DAYS; i++) {
             List<ClassData> dayClass = schedulesMap.getOrDefault(i, new ArrayList<>());
             View dayView = LayoutInflater.from(ScheduleActivity.this).inflate(R.layout.list_day_view, null);
             LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
@@ -118,9 +118,9 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     public void showQueryInterval(Calendar startDate) {
         Calendar scheduleStartDate = (Calendar) startDate.clone();
         scheduleStartDate.setTimeInMillis(scheduleStartDate.getTimeInMillis() + scheduleStartDate.getTimeZone().getRawOffset());
-        SimpleDateFormat format = new SimpleDateFormat(Constants.TIME_STAMP_DAYS);
+        SimpleDateFormat format = new SimpleDateFormat(FormatConstants.TIME_STAMP_DAYS);
         String start = format.format(scheduleStartDate.getTime());
-        scheduleStartDate.add(Calendar.DAY_OF_MONTH, Constants.SCHEDULE_INTERVAL_DAYS);
+        scheduleStartDate.add(Calendar.DAY_OF_MONTH, FormatConstants.SCHEDULE_INTERVAL_DAYS);
         txtWeekInterval.setText(start + " - " + scheduleStartDate.get(Calendar.DAY_OF_MONTH));
         txtTimezone.setText(getString(R.string.time_zone_hint, Locale.getDefault().getDisplayCountry()
                 + scheduleStartDate.getTimeZone().getDisplayName(true, TimeZone.SHORT)));

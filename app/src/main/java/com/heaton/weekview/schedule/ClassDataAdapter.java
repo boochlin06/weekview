@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.heaton.weekview.Constants;
+import com.heaton.weekview.constants.FormatConstants;
 import com.heaton.weekview.R;
 
 import java.text.DateFormat;
@@ -24,7 +24,7 @@ public class ClassDataAdapter extends RecyclerView.Adapter<ClassDataAdapter.Time
 
     public ClassDataAdapter(List<ClassData> classDataList) {
         this.classDataList = classDataList;
-        this.dateFormat = new SimpleDateFormat(Constants.TIME_STAMP_LIST_ITEM_FORMAT);
+        this.dateFormat = new SimpleDateFormat(FormatConstants.TIME_STAMP_LIST_ITEM_FORMAT);
     }
 
     public List<ClassData> getClassDataList() {

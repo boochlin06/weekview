@@ -2,7 +2,7 @@ package com.heaton.weekview.schedule;
 
 import android.util.Log;
 
-import com.heaton.weekview.Constants;
+import com.heaton.weekview.constants.FormatConstants;
 import com.heaton.weekview.R;
 import com.heaton.weekview.Utility;
 import com.heaton.weekview.model.ClassDataSource;
@@ -63,7 +63,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     private void loadSchedules() {
         view.showLoading(true);
-        DateFormat format = new SimpleDateFormat(Constants.TIME_STAMP_QUERY_STRING_FORMAT);
+        DateFormat format = new SimpleDateFormat(FormatConstants.TIME_STAMP_QUERY_STRING_FORMAT);
         String startAt = format.format(currentQueryDate.getTime());
         classDataSource.getScheduleList(teacherName, startAt
                 , new RemoteClassDataSource.GetScheduleCallback() {

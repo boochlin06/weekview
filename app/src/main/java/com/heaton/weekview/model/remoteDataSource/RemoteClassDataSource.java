@@ -7,7 +7,8 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.heaton.weekview.Constants;
+import com.heaton.weekview.constants.FormatConstants;
+import com.heaton.weekview.constants.NetworkConstants;
 import com.heaton.weekview.model.ClassDataSource;
 import com.heaton.weekview.model.ClassInterval;
 
@@ -28,11 +29,11 @@ public class RemoteClassDataSource implements ClassDataSource {
 
     private RemoteClassDataSource() {
         Gson gson = new GsonBuilder()
-                .setDateFormat(Constants.TIME_STAMP_RESPONSE_FORMAT)
+                .setDateFormat(FormatConstants.TIME_STAMP_RESPONSE_FORMAT)
                 .create();
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .baseUrl(RemoteClassDataService.BASE_URL)
+                .baseUrl(NetworkConstants.BASE_URL)
                 .build();
         remotePlayerDataService = retrofit.create(RemoteClassDataService.TeacherService.class);
     }
@@ -60,8 +61,9 @@ public class RemoteClassDataSource implements ClassDataSource {
     }
 
     @Override
-    public void updateScheduleList(String teacherName, List<ClassInterval> intervalList) {
-        //Nothing to do.
+    public void updateScheduleList(String teacherName, List<ClassInterval> intervalList
+            , boolean isBooked) {
+        //Todo: try to update to api.amazing
     }
 
 
@@ -99,12 +101,6 @@ public class RemoteClassDataSource implements ClassDataSource {
 
     public interface GetScheduleCallback {
         void onSuccess(ScheduleJsonObject scheduleJsonObject);
-
-        void onFailure(String errorMessage);
-    }
-
-    public interface GetListCallback {
-        void onSuccess(List<ClassInterval> intervalList);
 
         void onFailure(String errorMessage);
     }

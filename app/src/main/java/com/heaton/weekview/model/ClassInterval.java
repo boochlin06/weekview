@@ -1,8 +1,8 @@
 package com.heaton.weekview.model;
 
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -11,12 +11,11 @@ import java.util.Date;
 @Entity(tableName = "classInterval")
 public class ClassInterval {
     @SerializedName("start")
-    @Ignore
-//    @TypeConverters({Converters.class})
+    @TypeConverters({DateConverters.class})
     private Date startAt;
+
     @SerializedName("end")
-//    @TypeConverters({Converters.class})
-    @Ignore
+    @TypeConverters({DateConverters.class})
     private Date endAt;
     private boolean isBooked;
     private String teacherName;

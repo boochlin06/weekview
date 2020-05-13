@@ -1,32 +1,31 @@
-package com.heaton.weekview.model.localDataSource;
+package com.heaton.weekview.model;
 
 import android.content.Context;
 import android.util.Log;
 
-import com.heaton.weekview.model.ClassDataSource;
-import com.heaton.weekview.model.ClassInterval;
-import com.heaton.weekview.model.DateConverters;
+import com.heaton.weekview.model.localDataSource.ClassDataBase;
+import com.heaton.weekview.model.localDataSource.ClassIntervalDao;
 import com.heaton.weekview.model.remoteDataSource.RemoteClassDataSource;
 import com.heaton.weekview.model.remoteDataSource.ScheduleJsonObject;
 
 import java.util.Date;
 import java.util.List;
 
-public class LocalClassDataSource implements ClassDataSource {
+public class MockLocalClassDataSource implements ClassDataSource {
 
-    private static final String TAG = LocalClassDataSource.class.getSimpleName();
-    private static volatile LocalClassDataSource mInstance;
+    private static final String TAG = MockLocalClassDataSource.class.getSimpleName();
+    private static volatile MockLocalClassDataSource mInstance;
     private ClassIntervalDao classIntervalDao;
 
-    private LocalClassDataSource(Context context) {
+    private MockLocalClassDataSource(Context context) {
         this.classIntervalDao = ClassDataBase.getInstance(context).getClassIntervalDao();
     }
 
-    public static LocalClassDataSource getInstance(Context context) {
+    public static MockLocalClassDataSource getInstance(Context context) {
         if (mInstance == null) {
-            synchronized (LocalClassDataSource.class) {
+            synchronized (MockLocalClassDataSource.class) {
                 if (mInstance == null) {
-                    mInstance = new LocalClassDataSource(context);
+                    mInstance = new MockLocalClassDataSource(context);
                 }
             }
         }
