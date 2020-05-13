@@ -1,4 +1,4 @@
-package com.heaton.weekview.schedule;
+package com.heaton.weekview.schedules;
 
 import com.heaton.weekview.BasePresenter;
 import com.heaton.weekview.BaseView;

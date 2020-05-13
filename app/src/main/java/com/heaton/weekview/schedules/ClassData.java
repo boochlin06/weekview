@@ -1,4 +1,4 @@
-package com.heaton.weekview.schedule;
+package com.heaton.weekview.schedules;
 
 import java.util.Date;
 

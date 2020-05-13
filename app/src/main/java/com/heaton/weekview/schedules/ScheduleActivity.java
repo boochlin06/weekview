@@ -1,8 +1,7 @@
-package com.heaton.weekview.schedule;
+package com.heaton.weekview.schedules;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
