@@ -2,9 +2,9 @@ package com.heaton.weekview.schedule;
 
 import android.util.Log;
 
-import com.heaton.weekview.constants.FormatConstants;
 import com.heaton.weekview.R;
 import com.heaton.weekview.Utility;
+import com.heaton.weekview.constants.FormatConstants;
 import com.heaton.weekview.model.ClassDataSource;
 import com.heaton.weekview.model.remoteDataSource.RemoteClassDataSource;
 import com.heaton.weekview.model.remoteDataSource.ScheduleJsonObject;

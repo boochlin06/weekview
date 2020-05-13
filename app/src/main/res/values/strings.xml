@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">weekview</string>
+    <string name="app_name">Amazing talker</string>
     <string name="available_times">Available times</string>
     <string name="time_zone_hint">* All the timings listed are in your timezone:%s</string>
     <string name="network_error">Network connect error</string>
+    <string name="actionbar_title">Teacher %s</string>
 </resources>

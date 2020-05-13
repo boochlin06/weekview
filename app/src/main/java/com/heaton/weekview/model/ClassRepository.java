@@ -6,15 +6,12 @@ import com.heaton.weekview.model.remoteDataSource.RemoteClassDataSource;
 import com.heaton.weekview.model.remoteDataSource.ScheduleJsonObject;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class ClassRepository implements ClassDataSource {
     private static volatile ClassRepository mInstance;
 
     private ClassDataSource remote;
     private ClassDataSource local;
-    private ExecutorService executorService;
     private static final String TAG = ClassRepository.class.getSimpleName();
 
 
@@ -22,7 +19,6 @@ public class ClassRepository implements ClassDataSource {
             , @NonNull ClassDataSource remote) {
         this.remote = remote;
         this.local = local;
-        this.executorService = Executors.newSingleThreadExecutor();
     }
 
     public static ClassDataSource getInstance(@NonNull ClassDataSource local
@@ -44,19 +40,14 @@ public class ClassRepository implements ClassDataSource {
             @Override
             public void onSuccess(ScheduleJsonObject scheduleJsonObject) {
                 callback.onSuccess(scheduleJsonObject);
-                executorService.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        local.updateScheduleList(teacherName, scheduleJsonObject.getAvailableList(), false);
-                        local.updateScheduleList(teacherName, scheduleJsonObject.getBookedList(), true);
-                    }
-                });
+                local.updateScheduleList(teacherName, scheduleJsonObject.getAvailableList(), false);
+                local.updateScheduleList(teacherName, scheduleJsonObject.getBookedList(), true);
             }
 
             @Override
             public void onFailure(String errorMessage) {
-                callback.onFailure(errorMessage);
                 local.getScheduleList(teacherName, startedAt, callback);
+                callback.onFailure(errorMessage);
             }
         });
     }
@@ -64,12 +55,7 @@ public class ClassRepository implements ClassDataSource {
     @Override
     public void updateScheduleList(@NonNull String teacherName, @NonNull List<ClassInterval> intervalList
             , boolean isBooked) {
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                remote.updateScheduleList(teacherName, intervalList, isBooked);
-                local.updateScheduleList(teacherName, intervalList, isBooked);
-            }
-        });
+        remote.updateScheduleList(teacherName, intervalList, isBooked);
+        local.updateScheduleList(teacherName, intervalList, isBooked);
     }
 }

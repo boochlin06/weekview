@@ -2,6 +2,7 @@ package com.heaton.weekview.schedule;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -57,6 +58,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
         ButterKnife.bind(this);
+        setTitle(getString(R.string.actionbar_title, Injection.TEACHER_NAME));
         presenter = new SchedulePresenter(Injection.TEACHER_NAME
                 , Injection.provideDataSource(getApplicationContext()), this);
     }
@@ -90,29 +92,29 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         scheduleStartDate.setTimeInMillis(scheduleStartDate.getTimeInMillis()
                 + scheduleStartDate.getTimeZone().getRawOffset());
         linearSchedule.removeAllViews();
-        int startDayOfMonth = scheduleStartDate.get(Calendar.DAY_OF_MONTH);
-        for (int i = startDayOfMonth; i < startDayOfMonth + FormatConstants.SCHEDULE_INTERVAL_DAYS; i++) {
-            View dayView = LayoutInflater.from(ScheduleActivity.this).inflate(R.layout.list_day_view, null);
+        for (int i = 0; i < FormatConstants.SCHEDULE_INTERVAL_DAYS; i++) {
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT
                     , LinearLayout.LayoutParams.MATCH_PARENT, 1f);
+            View dayView = LayoutInflater.from(ScheduleActivity.this).inflate(R.layout.list_day_view, null);
             dayView.setLayoutParams(layoutParams);
 
             TextView txtDay = dayView.findViewById(R.id.txtDay);
             TextView txtSubDay = dayView.findViewById(R.id.txtSubDay);
             View imgAvailable = dayView.findViewById(R.id.imgDayAvailable);
             RecyclerView rcyTime = dayView.findViewById(R.id.rcyTime);
-            List<ClassData> dayClass = schedulesMap.getOrDefault(i, new ArrayList<>());
-            ClassDataAdapter adapter = new ClassDataAdapter(dayClass);
+            List<ClassData> dayClassList = schedulesMap.getOrDefault(
+                    scheduleStartDate.get(Calendar.DAY_OF_MONTH), new ArrayList<>());
+            ClassDataAdapter adapter = new ClassDataAdapter(dayClassList);
 
             txtDay.setText(formatDayOfWeek.format(scheduleStartDate.getTime()));
-            txtSubDay.setText(String.valueOf(i));
-            imgAvailable.setBackgroundColor(dayClass.size() > 0
+            txtSubDay.setText(String.valueOf(scheduleStartDate.get(Calendar.DAY_OF_MONTH)));
+            imgAvailable.setBackgroundColor(dayClassList.size() > 0
                     || today.get(Calendar.DAY_OF_YEAR) == scheduleStartDate.get(Calendar.DAY_OF_YEAR)
                     ? getColor(R.color.colorAccent) : Color.GRAY);
             rcyTime.setAdapter(adapter);
+            scheduleStartDate.add(Calendar.DAY_OF_MONTH, 1);
             linearSchedule.addView(dayView);
-            scheduleStartDate.add(Calendar.DAY_OF_WEEK, 1);
         }
     }
 

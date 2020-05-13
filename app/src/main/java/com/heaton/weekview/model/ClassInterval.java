@@ -20,7 +20,7 @@ public class ClassInterval {
     private boolean isBooked;
     private String teacherName;
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     private long id;
 
     public Date getStartAt() {
@@ -40,11 +40,11 @@ public class ClassInterval {
     }
 
     public long getId() {
-        return id;
+        return startAt.getTime();
     }
 
     public void setId(long id) {
-        this.id = id;
+        this.id = startAt.getTime();
     }
 
     public boolean isBooked() {

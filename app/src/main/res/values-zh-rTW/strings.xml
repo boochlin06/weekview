@@ -4,4 +4,5 @@
     <string name="available_times">授課時間</string>
     <string name="time_zone_hint">*時間以 (%s) 顯示</string>
     <string name="network_error">網路連接失敗</string>
+    <string name="actionbar_title">教師 %s</string>
 </resources>

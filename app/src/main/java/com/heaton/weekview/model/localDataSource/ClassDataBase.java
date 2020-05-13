@@ -33,6 +33,7 @@ public abstract class ClassDataBase extends RoomDatabase {
                 ClassDataBase.class,
                 DB_NAME)
                 .fallbackToDestructiveMigration()
+                .allowMainThreadQueries()
                 .build();
         return dataBase;
     }

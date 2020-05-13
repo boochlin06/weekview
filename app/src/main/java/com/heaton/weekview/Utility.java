@@ -1,5 +1,7 @@
 package com.heaton.weekview;
 
+import android.util.Log;
+
 import com.heaton.weekview.constants.FormatConstants;
 import com.heaton.weekview.model.ClassInterval;
 import com.heaton.weekview.model.remoteDataSource.ScheduleJsonObject;
