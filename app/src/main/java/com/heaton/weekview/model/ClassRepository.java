@@ -22,7 +22,7 @@ public class ClassRepository implements ClassDataSource {
             , @NonNull ClassDataSource remote) {
         this.remote = remote;
         this.local = local;
-        executorService = Executors.newSingleThreadExecutor();
+        this.executorService = Executors.newSingleThreadExecutor();
     }
 
     public static ClassDataSource getInstance(@NonNull ClassDataSource local

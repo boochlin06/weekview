@@ -8,9 +8,9 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import com.heaton.weekview.model.ClassInterval;
-import com.heaton.weekview.model.DateConverters;
+import com.heaton.weekview.model.DateTypeConverters;
 
-@TypeConverters({DateConverters.class})
+@TypeConverters({DateTypeConverters.class})
 @Database(entities = {ClassInterval.class}, version = 1, exportSchema = false)
 public abstract class ClassDataBase extends RoomDatabase {
     private static final String DB_NAME = "ClassDatabase.db";

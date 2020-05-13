@@ -10,7 +10,6 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -26,12 +25,12 @@ android {
     }
     flavorDimensions "default"
     productFlavors {
+        prod {
+            dimension "default"
+        }
         mock {
             dimension "default"
             applicationIdSuffix = ".mock"
-        }
-        prod {
-            dimension "default"
         }
     }
 }
@@ -45,17 +44,19 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+    implementation 'com.squareup.okhttp3:okhttp:3.14.7'
     implementation 'com.facebook.stetho:stetho:1.5.1'
-    implementation 'com.jakewharton:butterknife:10.2.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
+
+    def butterknife_version = '10.2.1'
+    implementation "com.jakewharton:butterknife:$butterknife_version"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknife_version"
 
     def retrofit2_version = '2.8.1'
     implementation "com.squareup.retrofit2:retrofit:$retrofit2_version"
-    implementation 'com.squareup.okhttp3:okhttp:3.14.7'
     implementation "com.squareup.retrofit2:converter-gson:$retrofit2_version"
     implementation "com.squareup.retrofit2:converter-scalars:$retrofit2_version"
-    def room_version = "2.2.5"
 
+    def room_version = "2.2.5"
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
 

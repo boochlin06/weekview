@@ -12,6 +12,7 @@ import com.heaton.weekview.model.remoteDataSource.RemoteClassDataSource;
 import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
 
 public class Injection {
+    public static final String TEACHER_NAME = "wayne-duckworth";
 
     public static ClassDataSource provideDataSource(@NonNull Context context) {
         checkNotNull(context);

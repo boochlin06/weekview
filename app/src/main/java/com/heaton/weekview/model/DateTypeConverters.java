@@ -9,7 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DateConverters {
+public class DateTypeConverters {
     static DateFormat df = new SimpleDateFormat(FormatConstants.TIME_STAMP_RESPONSE_FORMAT);
 
     @TypeConverter
@@ -30,14 +30,4 @@ public class DateConverters {
     public static String fromDateToString(Date value) {
         return df.format(value);
     }
-//
-//    @TypeConverter
-//    public static Date fromTimestamp(Long value) {
-//        return value == null ? null : new Date(value);
-//    }
-//
-//    @TypeConverter
-//    public static Long dateToTimestamp(Date date) {
-//        return date == null ? null : date.getTime();
-//    }
 }

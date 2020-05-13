@@ -11,11 +11,11 @@ import java.util.Date;
 @Entity(tableName = "classInterval")
 public class ClassInterval {
     @SerializedName("start")
-    @TypeConverters({DateConverters.class})
+    @TypeConverters({DateTypeConverters.class})
     private Date startAt;
 
     @SerializedName("end")
-    @TypeConverters({DateConverters.class})
+    @TypeConverters({DateTypeConverters.class})
     private Date endAt;
     private boolean isBooked;
     private String teacherName;

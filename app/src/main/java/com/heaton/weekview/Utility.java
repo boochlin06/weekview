@@ -1,8 +1,9 @@
 package com.heaton.weekview;
 
-import com.heaton.weekview.schedule.ClassData;
+import com.heaton.weekview.constants.FormatConstants;
 import com.heaton.weekview.model.ClassInterval;
 import com.heaton.weekview.model.remoteDataSource.ScheduleJsonObject;
+import com.heaton.weekview.schedule.ClassData;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,7 +33,8 @@ public class Utility {
         Calendar calendar = Calendar.getInstance();
         for (int i = 0; i < classDataList.size(); i++) {
             ClassInterval interval = classDataList.get(i);
-            for (long j = interval.getStartAt().getTime(); j < interval.getEndAt().getTime(); j += 30 * 60 * 1000) {
+            for (long j = interval.getStartAt().getTime(); j < interval.getEndAt().getTime()
+                    ; j += FormatConstants.CLASS_INTERVAL_IN_MILLS) {
                 ClassData classData = new ClassData();
                 classData.setBooked(isBooked);
                 classData.setStartTime(new Date(j + calendar.getTimeZone().getRawOffset()));

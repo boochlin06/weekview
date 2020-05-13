@@ -1,11 +1,11 @@
 package com.heaton.weekview.model.localDataSource;
 
 import android.content.Context;
-import android.util.Log;
 
+import com.heaton.weekview.constants.FormatConstants;
 import com.heaton.weekview.model.ClassDataSource;
 import com.heaton.weekview.model.ClassInterval;
-import com.heaton.weekview.model.DateConverters;
+import com.heaton.weekview.model.DateTypeConverters;
 import com.heaton.weekview.model.remoteDataSource.RemoteClassDataSource;
 import com.heaton.weekview.model.remoteDataSource.ScheduleJsonObject;
 
@@ -37,9 +37,8 @@ public class LocalClassDataSource implements ClassDataSource {
     public void getScheduleList(String teacherName, String startedAt
             , RemoteClassDataSource.GetScheduleCallback callback) {
         try {
-            Log.d(TAG, "startedAt" + startedAt);
-            Date startDate = DateConverters.fromStringToDate(startedAt);
-            Date endAt = new Date(startDate.getTime() + 7 * 24 * 3600 * 1000);
+            Date startDate = DateTypeConverters.fromStringToDate(startedAt);
+            Date endAt = new Date(startDate.getTime() + FormatConstants.SCHEDULE_INTERVAL_DAYS * 24 * 3600 * 1000);
             List<ClassInterval> bookedList = classIntervalDao.getClassIntervals(teacherName
                     , startDate, endAt, true);
             List<ClassInterval> availableList = classIntervalDao.getClassIntervals(teacherName
